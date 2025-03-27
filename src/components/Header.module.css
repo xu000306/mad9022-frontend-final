@@ -1,5 +1,5 @@
 .header {
-  background-color: var(--holly-green);
+  background-color: var(--text-color);
   color: white;
   padding: 1rem;
   display: flex;
@@ -10,7 +10,7 @@
 .logo h1 {
   margin: 0;
   font-size: var(--font-size-large);
-  color: var(--holly-gold);
+  color: var(--primary-color);
 }
 
 .nav {
@@ -20,17 +20,17 @@
 }
 
 .link {
-  color: white;
+  color: var(--secondary-color);
   text-decoration: none;
 }
 
 .link:hover {
-  color: var(--holly-gold);
+  color: var(--primary-color);
   text-decoration: none;
 }
 
 .button {
-  background-color: var(--holly-red);
+  background-color: var(--tertiary-color);
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -40,5 +40,6 @@
 }
 
 .button:hover {
-  opacity: 0.9;
+  background-color: var(--primary-color);
+  color: var(--text-color);
 }

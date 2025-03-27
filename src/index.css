@@ -1,10 +1,10 @@
 :root {
   /* HollyCrapr color palette */
-  --holly-green: #0e5e31;
-  --holly-red: #c91f37;
-  --holly-gold: #ffd700;
-  --holly-dark: #333333;
-  --holly-light: #f5f5f5;
+  --primary-color: #ffdd57; /* Warm sunlight breaking through */
+  --secondary-color: #a8d0e6; /* Soft sky blue */
+  --tertiary-color: #7b8ea7; /* Cloudy morning tones */
+  --background-color: #fdfdfd; /* Pure light */
+  --text-color: #2f3b52; /* Contrast for depth */
   
   /* Typography */
   --font-family: 'Arial', sans-serif;
@@ -25,6 +25,7 @@
 body {
   font-family: var(--font-family);
   line-height: 1.6;
-  background-color: var(--holly-light);
-  color: var(--holly-dark);
+  background-color: var(--background-color); 
+  
+  color: var(--text-color); 
 }
