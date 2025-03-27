@@ -1,0 +1,21 @@
+.home {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.heading {
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  font-size: var(--font-size-xlarge);
+}
+
+.description {
+  color: var(--tertiary-color);
+  font-size: var(--font-size-medium);
+  margin-bottom: 2rem;
+}
+
+.accent {
+  color: var(--primary-color);
+  font-weight: bold;
+}
