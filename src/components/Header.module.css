@@ -2,6 +2,14 @@
   background-color: var(--text-color);
   color: white;
   padding: 1rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
