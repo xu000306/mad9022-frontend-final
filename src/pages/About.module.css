@@ -1,0 +1,22 @@
+.about {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  
+  .heading {
+    color: var(--text-color);
+    font-size: var(--font-size-xlarge);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .content {
+    color: var(--text-color);
+    font-size: var(--font-size-medium);
+    line-height: 1.6;
+  }
+  
+  .content p {
+    margin-bottom: 1.5rem;
+  }
