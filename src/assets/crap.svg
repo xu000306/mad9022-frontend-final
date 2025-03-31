@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+  <rect width="300" height="200" fill="#f3f3f3"/>
+  <!-- Background shade -->
+  <ellipse cx="150" cy="150" rx="100" ry="40" fill="#d9bc9a"/>
+  <!-- Main "pile" shape -->
+  <path d="M100,130 Q150,80 200,130 Q220,150 200,160 Q150,180 100,160 Q80,150 100,130" fill="#b38c5c"/>
+  <!-- Decorative details -->
+  <ellipse cx="130" cy="125" rx="15" ry="8" fill="#977348"/>
+  <ellipse cx="170" cy="135" rx="12" ry="6" fill="#977348"/>
+  <ellipse cx="150" cy="145" rx="18" ry="9" fill="#8c6239"/>
+  <!-- Text label -->
+  <text x="150" y="80" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="#666">Crap</text>
+</svg>
