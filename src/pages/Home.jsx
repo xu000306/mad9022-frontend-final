@@ -1,50 +1,54 @@
-import {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import styles from './Home.module.css'
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styles from "./Home.module.css";
 
 function Home() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useState({
-    keyword: '',
-    distance: '10'
+    keyword: "",
+    distance: "10",
   });
 
   const handleChange = (e) => {
     setSearchParams({
       ...searchParams,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate(`/crap?keyword=${searchParams.keyword}&distance=${searchParams.distance}`);
+    navigate(
+      `/crap?keyword=${searchParams.keyword}&distance=${searchParams.distance}`
+    );
   };
 
   return (
     <div className={styles.home}>
-      <h2 className={styles.heading}>Welcome to HolyCrapr</h2>
-      <p className={styles.description}>Find items people are looking to get rid of!</p>
+      <h2 className={styles.heading}>Welcome to HolyCrap</h2>
+      <p className={styles.description}>
+        Find items people are looking to get rid of!
+      </p>
 
       <div className={styles.searchContainer}>
         <h3 className={styles.searchHeading}>Search for Items</h3>
         <form onSubmit={handleSubmit} className={styles.searchForm}>
           <div className={styles.formGroup}>
             <label htmlFor="keyword">Keyword</label>
-            <input 
+            <input
               type="text"
-              id='keyword'
-              name='keyword'
+              id="keyword"
+              name="keyword"
               value={searchParams.keyword}
               onChange={handleChange}
-              placeholder='What are you looking for?'
+              placeholder="What are you looking for?"
             />
           </div>
 
           <div className={styles.formGroup}>
             <label htmlFor="distance">Distance (km)</label>
             <select
-              name="distance" 
+              name="distance"
               id="distance"
               value={searchParams.distance}
               onChange={handleChange}
@@ -56,11 +60,13 @@ function Home() {
             </select>
           </div>
 
-          <button type="submit" className={styles.searchButton}>Search</button>
+          <button type="submit" className={styles.searchButton}>
+            Search
+          </button>
         </form>
       </div>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
