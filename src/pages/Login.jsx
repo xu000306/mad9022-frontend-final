@@ -33,7 +33,8 @@ export default function Login() {
   }, []);
 
   function handleClick() {
-    const googleAuthUrl = "http://localhost:5000/auth/google"; // Your API route
+    const googleAuthUrl =
+      "https://mad9124backendfinal.onrender.com/auth/google"; // Your API route
     window.location.href = googleAuthUrl; // Redirect the user to Google login page
   }
 
