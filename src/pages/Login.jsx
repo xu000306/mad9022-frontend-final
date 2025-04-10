@@ -3,47 +3,48 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
 export default function Login() {
-  const [btn, setBtn] = useState(false);
-  // Function to handle the token extraction from the URL query parameters
-  function handleQueryParams() {
-    // Get the query parameters from the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get("token");
+  const [log, setLogState] = useState(false);
+
+  // Check for token on initial load
+  useEffect(() => {
+    const token = Cookies.get("token"); // read cookie
+    console.log("token from cookie:", token);
 
     if (token) {
-      console.log("Token received:", token);
-
-      // Store the token in cookies with appropriate options
-      Cookies.set("token", token, {
-        secure: true, // cookie will be sent only over HTTPS
-        expires: 6 / 24, // token expires in 6 hours
-      });
-      // change the button to  Log in successfully!
-      setBtn(true);
-      // Optionally, clean up the URL (remove the token from the query string)
-      // window.history.replaceState(null, "", window.location.pathname);
+      setLogState(true);
     } else {
-      console.log("token fetch failed!");
-    }
-  }
+      //Check if there's a token in the URL after Google redirect
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlToken = urlParams.get("token");
 
-  // Call the function to handle query parameters when the component mounts
-  useEffect(() => {
-    handleQueryParams();
+      if (urlToken) {
+        //set cookie expire in 7 days
+        Cookies.set("token", urlToken, { secure: true, expires: 7 });
+        setLogState(true);
+
+        // remove token from URL
+        // window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
   }, []);
 
   function handleClick() {
-    const googleAuthUrl =
-      "https://mad9124backendfinal.onrender.com/auth/google"; // Your API route
-    window.location.href = googleAuthUrl; // Redirect the user to Google login page
+    if (log) {
+      // Logout
+      Cookies.remove("token");
+      setLogState(false);
+    } else {
+      // Redirect to Google login
+      const googleAuthUrl =
+        "https://mad9124backendfinal.onrender.com/auth/google";
+      window.location.href = googleAuthUrl;
+    }
   }
 
   return (
     <div>
       <button className={styles.btn} onClick={handleClick}>
-        {btn
-          ? "Log in successfully!"
-          : "Click To Login By Google Authentication"}
+        {log ? "Click To Logout" : "Click To Login By Google Authentication"}
       </button>
     </div>
   );

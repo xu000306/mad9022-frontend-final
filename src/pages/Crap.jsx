@@ -1,31 +1,23 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import styles from "./Crap.module.css";
-import crapImage from "../assets/crap.svg";
 import { useData, DataProvider } from "../context/DataContext";
-
+import SearchForm from "../components/SearchForm";
 function Crap() {
-  const [searchParams] = useSearchParams();
-
   const [loading, setLoading] = useState(false);
-
-  const keyword = searchParams.get("keyword") || "";
-  const distance = searchParams.get("distance") || "10";
 
   //get data from data provider;
   const items = useData().data;
   console.log("items", items);
+  // if (!items || items.length === 0) {
+  //   return <p>No data available, Please login!</p>;
+  // }
 
   return (
     <div className={styles.crapPage}>
       <h1 className={styles.pageTitle}>Available Items</h1>
-
-      <div className={styles.searchSummary}>
-        <p>
-          Showing results for: {keyword ? `"${keyword}"` : "All items"}
-          within {distance} km
-        </p>
-      </div>
+      <SearchForm></SearchForm>
+      <div className={styles.searchSummary}></div>
 
       {loading ? (
         <div className={styles.loading}>Loading items...</div>

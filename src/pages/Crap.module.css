@@ -27,6 +27,20 @@
   gap: 2rem;
   margin-top: 2rem;
 }
+.itemsGrid::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: url(../assets/holycrap.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.3; /* 30% opacity */
+  z-index: -1; /* Send it behind the grid content */
+}
 
 .itemCard {
   border-radius: 8px;

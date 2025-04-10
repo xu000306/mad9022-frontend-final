@@ -12,9 +12,9 @@ function App() {
       <Header />
       <main className={styles.main}>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Crap />} />
           <Route path="/about" element={<About />} />
-          <Route path="/crap" element={<Crap />} />
+
           <Route path="/login" element={<Login />} />
         </Routes>
       </main>

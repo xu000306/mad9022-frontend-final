@@ -1,53 +1,59 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
+import Cookies from "js-cookie";
 
 const DataContext = createContext();
 
-export function DataProvider({ children }) {
+function DataProvider({ children }) {
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-  const getTokenFromCookie = () => {
-    const match = document.cookie.match(/(^| )token=([^;]+)/);
-    return match ? match[2] : null;
-  };
+  // make a common use fetch function
+  async function fetchData({
+    endpoint = "",
+    method = "GET",
+    query = "",
+    body = null,
+  }) {
+    const token = Cookies.get("token");
+    if (!token) {
+      setData([]);
+      return;
+    }
 
-  const fetchData = async () => {
     try {
-      const crapApi = "https://mad9124backendfinal.onrender.com/api/crap/";
-      let token = getTokenFromCookie();
-      token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZWI0ZGM0YzQ3M2NjMTdhY2E2MGQ0OSIsIm5hbWUiOiJUb20gWHUiLCJpYXQiOjE3NDM3ODQxMzQsImV4cCI6MTc0NjM3NjEzNH0.5sVuMF2V7EWm-94dvXLlwQeP1Do450lZ9BOUtFDWK7s";
+      const apiUrl = `https://mad9124backendfinal.onrender.com/api/${endpoint}?query=${encodeURIComponent(
+        query
+      )}`;
 
-      const res = await fetch(crapApi, {
-        method: "GET",
+      const res = await fetch(apiUrl, {
+        method,
         headers: {
           authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
         credentials: "include",
+        body: method !== "GET" && body ? JSON.stringify(body) : null,
       });
+
       if (!res.ok) throw new Error("Fetch failed");
       const json = await res.json();
-      console.log(json);
-
       setData(json);
     } catch (err) {
       console.error("Error fetching data:", err);
+      setData([]);
     }
-  };
+  }
 
   return (
-    <DataContext.Provider value={{ data, setData }}>
+    <DataContext.Provider value={{ data, setData, fetchData }}>
       {children}
     </DataContext.Provider>
   );
 }
 
-// custom hook for using context
-export function useData() {
+function useData() {
   const context = useContext(DataContext);
   if (!context) throw new Error("useData must be used inside <DataProvider>");
   return context;
 }
+
+export { useData, DataProvider };
