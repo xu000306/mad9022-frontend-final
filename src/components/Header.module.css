@@ -51,3 +51,9 @@
   background-color: var(--primary-color);
   color: var(--text-color);
 }
+.logoImage {
+  width: 6rem;
+}
+.logoName {
+  display: inline;
+}
