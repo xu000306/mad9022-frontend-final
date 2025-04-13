@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import { useData } from "../context/DataContext";
 
-export default function SearchForm() {
+export default function SearchForm(props) {
   const [searchQuery, setSearchQuery] = useState("");
-  const { fetchData } = useData();
+  const { fetchData, setData, data } = useData();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     fetchData({
-      endpoint: "crap",
       method: "GET",
-      query: searchQuery,
+      req: `?query=${searchQuery}`,
+    }).then((res) => {
+      setData(res);
+      //clear input, async anyway
+      setSearchQuery("");
     });
   };
 

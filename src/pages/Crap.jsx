@@ -1,51 +1,217 @@
-import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useData } from "../context/DataContext";
+import Cookies from "js-cookie";
+import { useState, useEffect, useRef } from "react";
 import styles from "./Crap.module.css";
-import { useData, DataProvider } from "../context/DataContext";
-import SearchForm from "../components/SearchForm";
-function Crap() {
-  const [loading, setLoading] = useState(false);
+//list name of buttons
+const initialBtnStates = {
+  interest: false,
+  flush: false,
+  schedule: false,
+  agree: false,
+  disagree: false,
+  buyerReset: false,
+  sellerReset: false,
+  suggestion: false,
+};
+function checkIfMyCrap(token, crapDetail) {
+  if (token && crapDetail) {
+    //check if my crap
+    const payloadBase64 = token.split(".")[1];
+    const payloadJson = atob(payloadBase64);
+    const userId = JSON.parse(payloadJson).id;
+    console.log(userId, "||", crapDetail.owner._id);
 
-  //get data from data provider;
-  const items = useData().data;
-  console.log("items", items);
-  // if (!items || items.length === 0) {
-  //   return <p>No data available, Please login!</p>;
-  // }
+    if (userId === crapDetail.owner._id) {
+      return true;
+    }
+    return false;
+  }
+}
+console.log("outside of crap function");
 
+export default function Crap() {
+  const token = Cookies.get("token");
+  const isMyCrapRef = useRef(false);
+  const [btnStates, setBtnStates] = useState(initialBtnStates);
+  const [crapDetail, setCrapDetail] = useState({});
+
+  //get crap id
+  const { id } = useParams();
+  //fetch single crap once
+  const { fetchData } = useData();
+  useEffect(() => {
+    fetchData({
+      method: "GET",
+      req: id,
+    }).then((res) => {
+      isMyCrapRef.current = checkIfMyCrap(token, res);
+      setCrapDetail(res);
+    });
+  }, []);
+
+  //decide button states
+  useEffect(() => {
+    // prevent empty owen
+    if (!(crapDetail && crapDetail?.owner?._id)) {
+      return console.log("no crap!");
+    }
+    console.log("check if my crap again!");
+
+    isMyCrapRef.current = checkIfMyCrap(token, crapDetail);
+    const status = crapDetail.status.toLowerCase();
+    //clean the buttons
+    setBtnStates({ initialBtnStates });
+
+    if (isMyCrapRef.current) {
+      // if (status === "available") {
+      //   setBtnStates({ ...initialBtnStates, flush: true });
+      // }
+      if (status === "interested") {
+        setBtnStates({ ...initialBtnStates, schedule: true });
+      }
+      if (status === "scheduled") {
+        setBtnStates({
+          ...initialBtnStates,
+          buyerReset: true,
+          suggestion: true,
+        });
+      }
+      if (status === "agreed") {
+        setBtnStates({ ...initialBtnStates, flush: true });
+      }
+    }
+    //not my crap
+    if (!isMyCrapRef.current) {
+      if (status === "available") {
+        setBtnStates({ ...initialBtnStates, interest: true });
+      }
+      if (status === "interested") {
+        setBtnStates({ ...initialBtnStates, buyerReset: true });
+      }
+      if (status === "scheduled") {
+        setBtnStates({
+          ...initialBtnStates,
+          agree: true,
+          disagree: true,
+          suggestion: true,
+        });
+      }
+    }
+    //if flushed hide all buttons
+    if (status === "flushed") {
+      setBtnStates({ ...initialBtnStates });
+    }
+  }, [crapDetail]);
+
+  function doFetch(request) {
+    fetchData({
+      req: request,
+    }).then((res) => {
+      if (!res?.title) throw new Error("crap logic failed");
+      setCrapDetail({ ...res });
+    });
+  }
+  function flush() {
+    console.log("flush!");
+    doFetch(`${id}/flush`);
+  }
+  function setInterest() {
+    console.log("interested!");
+    doFetch(`${id}/interested`);
+  }
+  function reset() {
+    console.log("reset!");
+    doFetch(`${id}/reset`);
+  }
+  function agree() {
+    console.log("agree");
+    doFetch(`${id}/agree`);
+  }
+  function disagree() {
+    console.log("disagree");
+    doFetch(`${id}/disagree`);
+  }
+  function schedule(ev) {
+    ev.preventDefault();
+    const data = new FormData(ev.target);
+    const address = data.get("address");
+    const date = data.get("date");
+    const time = data.get("time");
+    console.log(address, date, time);
+    if (address && date && time) {
+      fetchData({
+        req: `${id}/suggest`,
+
+        body: { address, date, time },
+      }).then((res) => {
+        if (!res?.title) throw new Error("crap logic failed");
+        setCrapDetail({ ...res });
+        console.log("schedule submit!");
+      });
+    } else {
+      throw new Error("empty suggestion input! ");
+    }
+  }
   return (
-    <div className={styles.crapPage}>
-      <h1 className={styles.pageTitle}>Available Items</h1>
-      <SearchForm></SearchForm>
-      <div className={styles.searchSummary}></div>
-
-      {loading ? (
-        <div className={styles.loading}>Loading items...</div>
-      ) : items.length > 0 ? (
-        <div className={styles.itemsGrid}>
-          {items.map((item) => (
-            <div key={item._id} className={styles.itemCard}>
-              <div className={styles.itemImage}>
-                <img src={item.images[0]} alt={item.title} />
-              </div>
-              <div className={styles.itemContent}>
-                <h2 className={styles.itemTitle}>{item.title}</h2>
-                <p className={styles.itemDescription}>{item.description}</p>
-                <a href={`/crap/${item._id}`} className={styles.viewButton}>
-                  View Details
-                </a>
-              </div>
+    <>
+      {Object.keys(crapDetail).length > 0 ? (
+        <div className={styles.page}>
+          <img
+            src={crapDetail.images[0]}
+            alt="carp picture"
+            className={styles.image}
+          />
+          <h2>{id}</h2>
+          <h2>{crapDetail.title}</h2>
+          <p>Owner:{crapDetail.owner.name}</p>
+          <p>{isMyCrapRef.current ? "My Crap" : "Not My Crap"}</p>
+          <p>{crapDetail.description}</p>
+          <p>{crapDetail.status}</p>
+          {btnStates.flush && <button onClick={flush}>Flush</button>}
+          {btnStates.schedule && (
+            <form
+              onSubmit={(ev) => {
+                schedule(ev);
+              }}
+            >
+              <h4>Set pickup address and time:</h4>
+              <input
+                type="text"
+                name="address"
+                placeholder="Pick up address"
+                required
+              />
+              <input type="date" name="date" required />
+              <input type="time" name="time" required />
+              <button>Submit schedule</button>
+            </form>
+          )}
+          {btnStates.suggestion && crapDetail?.suggestion?.address && (
+            <div className={styles.suggestion}>
+              <p>{"Pick Up Suggestion:"}</p>
+              <p>{crapDetail.suggestion.address}</p>
+              <p>{new Date(crapDetail.suggestion.date).toLocaleDateString()}</p>
+              <p>{crapDetail.suggestion.time}</p>
             </div>
-          ))}
+          )}
+
+          {btnStates.buyerReset && (
+            <button onClick={reset}>Cancel Deal </button>
+          )}
+
+          {btnStates.interest && (
+            <button onClick={setInterest}>I Want It</button>
+          )}
+          {btnStates.sellerReset && (
+            <button onClick={reset}>Anyway,I regret! </button>
+          )}
+          {btnStates.agree && <button onClick={agree}>Agree</button>}
+          {btnStates.disagree && <button onClick={disagree}>Disagree</button>}
         </div>
       ) : (
-        <div className={styles.noResults}>
-          <p>No items found matching your search criteria.</p>
-          <p>Try adjusting your search terms or increasing the distance.</p>
-        </div>
+        <div>Crap Not Found!</div>
       )}
-    </div>
+    </>
   );
 }
-
-export default Crap;

@@ -8,22 +8,24 @@ function DataProvider({ children }) {
 
   // make a common use fetch function
   async function fetchData({
-    endpoint = "",
-    method = "GET",
-    query = "",
+    method = "POST",
+    req = "",
     body = null,
+    headers = null,
   }) {
     const token = Cookies.get("token");
     if (!token) {
-      setData([]);
+      console.log("get token from cookie failed!");
+
       return;
     }
 
     try {
-      const apiUrl = `https://mad9124backendfinal.onrender.com/api/${endpoint}?query=${encodeURIComponent(
-        query
-      )}`;
+      // const apiUrl = `https://mad9124backendfinal.onrender.com/api/`
 
+      const apiUrl = `http://localhost:5000/api/crap/${req}`;
+      // const url =
+      //   "http://localhost:5000/api/crap/67f3389bc90e479ae7be4ab2/interested";
       const res = await fetch(apiUrl, {
         method,
         headers: {
@@ -36,10 +38,11 @@ function DataProvider({ children }) {
 
       if (!res.ok) throw new Error("Fetch failed");
       const json = await res.json();
-      setData(json);
+      console.log("data from fetch", json);
+
+      return json;
     } catch (err) {
       console.error("Error fetching data:", err);
-      setData([]);
     }
   }
 
