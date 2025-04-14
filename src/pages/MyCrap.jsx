@@ -22,7 +22,9 @@ async function fetchData({
     const apiUrl = `http://localhost:5000/api/${endpoint}${
       query ? `?query=${encodeURIComponent(query)}` : ""
     }`;
-
+    // const apiUrl = `https://mad9124backendfinal.onrender.com/api/${endpoint}${
+    //   query ? `?query=${encodeURIComponent(query)}` : ""
+    // }`;
     // Configure headers based on whether we're sending JSON or FormData
     const headers = {
       authorization: `Bearer ${token}`,
@@ -102,8 +104,8 @@ function MyCrap() {
 
           console.log("result", result);
           //result && result.data && result.data.length > 0
-          if (result) {
-            setItems(result);
+          if (result?.data) {
+            setItems(result.data);
             setLoading(false);
             return; // Exit early if we have data
           }
@@ -111,58 +113,6 @@ function MyCrap() {
           console.error("Error fetching from API:", err);
           // Continue to use mock data
         }
-
-        // Use mock data if API call fails or returns no data
-        // console.log("Using mock data");
-        // const mockItems = [
-        //   {
-        //     _id: "1",
-        //     title: "Vintage Sofa",
-        //     description:
-        //       "Well-loved vintage sofa. Some wear but still comfortable and stylish.",
-        //     imageUrl: null,
-        //     status: "AVAILABLE",
-        //     owner: "user123",
-        //   },
-        //   {
-        //     _id: "2",
-        //     title: "Coffee Table",
-        //     description:
-        //       "Wooden coffee table, minor scratches but sturdy and functional.",
-        //     imageUrl: null,
-        //     status: "INTERESTED",
-        //     owner: "user123",
-        //   },
-        //   {
-        //     _id: "3",
-        //     title: "Desk Chair",
-        //     description:
-        //       "Ergonomic office chair with adjustable height. Very comfortable.",
-        //     imageUrl: null,
-        //     status: "SUGGESTED",
-        //     owner: "user123",
-        //   },
-        //   {
-        //     _id: "4",
-        //     title: "Bookshelf",
-        //     description:
-        //       "Wooden bookshelf with 5 shelves. Perfect for your book collection.",
-        //     imageUrl: null,
-        //     status: "AGREED",
-        //     owner: "user123",
-        //   },
-        //   {
-        //     _id: "5",
-        //     title: "Floor Lamp",
-        //     description:
-        //       "Standing lamp with adjustable brightness. Modern design.",
-        //     imageUrl: null,
-        //     status: "AVAILABLE",
-        //     owner: "user123",
-        //   },
-        // ];
-
-        setItems(result);
       } catch (err) {
         console.error("Error in getUserCrap:", err);
         setError("Failed to load your items. Please try again later.");

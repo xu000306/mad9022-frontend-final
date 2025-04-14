@@ -21,11 +21,10 @@ function DataProvider({ children }) {
     }
 
     try {
-      // const apiUrl = `https://mad9124backendfinal.onrender.com/api/`
+      //const apiUrl = `https://mad9124backendfinal.onrender.com/api/crap/${req}`;
 
       const apiUrl = `http://localhost:5000/api/crap/${req}`;
-      // const url =
-      //   "http://localhost:5000/api/crap/67f3389bc90e479ae7be4ab2/interested";
+
       const res = await fetch(apiUrl, {
         method,
         headers: {
@@ -36,11 +35,11 @@ function DataProvider({ children }) {
         body: method !== "GET" && body ? JSON.stringify(body) : null,
       });
 
-      if (!res.ok) throw new Error("Fetch failed");
+      if (!res.ok) console.error("Fetch failed");
       const json = await res.json();
       console.log("data from fetch", json);
 
-      return json;
+      return json?.data;
     } catch (err) {
       console.error("Error fetching data:", err);
     }

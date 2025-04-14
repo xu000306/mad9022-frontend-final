@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 import styles from "./Home.module.css";
 import { useData, DataProvider } from "../context/DataContext";
 import SearchForm from "../components/SearchForm";
@@ -46,7 +45,7 @@ function Home() {
       ) : (
         <div className={styles.noResults}>
           <p>No items found matching your search criteria.</p>
-          <p>Try adjusting your search terms or increasing the distance.</p>
+          <p> Try adjusting your search terms</p>
         </div>
       )}
     </div>
