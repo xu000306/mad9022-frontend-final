@@ -16,6 +16,12 @@ function Header() {
           <Link className={styles.link} to="/about">
             About
           </Link>
+          <Link className={styles.link} to="/offer">
+            Offer Crap
+          </Link>
+          <Link className={styles.link} to="/mine">
+            My Crap
+          </Link>
           <Link to={{ pathname: "/login" }}>
             <button className={styles.button}>Login</button>
           </Link>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useData } from "../context/DataContext";
+import styles from "./searchForm.module.css";
 
 export default function SearchForm(props) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,10 +24,13 @@ export default function SearchForm(props) {
       <input
         type="text"
         value={searchQuery}
+        className={styles.searchBar}
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="Search..."
       />
-      <button type="submit">Search</button>
+      <button type="submit" className={styles.btn}>
+        Search
+      </button>
     </form>
   );
 }

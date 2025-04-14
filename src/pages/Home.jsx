@@ -23,7 +23,7 @@ function Home() {
 
       {loading ? (
         <div className={styles.loading}>Loading items...</div>
-      ) : items.length > 0 ? (
+      ) : items?.length > 0 ? (
         <div className={styles.itemsGrid}>
           {items.map((item) => (
             <div key={item._id} className={styles.itemCard}>
