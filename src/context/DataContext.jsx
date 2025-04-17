@@ -1,10 +1,40 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
 const DataContext = createContext();
+//if my crap function
+function checkIfMyCrap(token, crapDetail) {
+  if (token && crapDetail) {
+    //check if my crap
+    const payloadBase64 = token.split(".")[1];
+    const payloadJson = atob(payloadBase64);
+    const userId = JSON.parse(payloadJson).id;
+    console.log(userId, "||", crapDetail.owner?._id);
+
+    if (userId === crapDetail.owner?._id) {
+      return true;
+    }
+    return false;
+  }
+}
+//check if I am the buyer
+function checkIfIAmBuyer(token, crapDetail) {
+  if (token && crapDetail) {
+    const payloadBase64 = token.split(".")[1];
+    const payloadJson = atob(payloadBase64);
+    const userId = JSON.parse(payloadJson).id;
+    console.log(userId, "||", "buyer", crapDetail?.buyer?._id);
+
+    if (userId === crapDetail?.buyer?._id) {
+      return true;
+    }
+    return false;
+  }
+}
 
 function DataProvider({ children }) {
   const [data, setData] = useState([]);
+  const [notice, setNotice] = useState(false);
 
   // make a common use fetch function
   async function fetchData({
@@ -45,8 +75,43 @@ function DataProvider({ children }) {
     }
   }
 
+  //when my crap has status : interested, agreed and not my crap has scheduled ,add notice
+  const token = Cookies.get("token");
+  useEffect(() => {
+    const getNotice = async () => {
+      const data = await fetchData({ method: "GET", req: "mine" });
+      if (data && data?.length > 0) {
+        console.log("shit", data);
+        const filterData = data.filter((details) => {
+          let isMine = checkIfMyCrap(token, details);
+          let isBuyer = checkIfIAmBuyer(token, details);
+          console.log(details.status);
+
+          if (
+            isMine &&
+            (details.status === "INTERESTED" || details.status === "AGREED")
+          ) {
+            return true;
+          }
+          if (isBuyer && details.status === "SCHEDULED") {
+            return true;
+          }
+          return false;
+        });
+        console.log(filterData);
+
+        if (filterData.length > 0) {
+          console.log("notice content", filterData);
+
+          setNotice(filterData);
+        }
+      }
+    };
+    getNotice();
+  }, [token]);
+
   return (
-    <DataContext.Provider value={{ data, setData, fetchData }}>
+    <DataContext.Provider value={{ data, setData, fetchData, notice }}>
       {children}
     </DataContext.Provider>
   );

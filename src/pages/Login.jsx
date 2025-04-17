@@ -37,7 +37,11 @@ export default function Login() {
       // Redirect to Google login
       // const googleAuthUrl =
       //   "https://mad9124backendfinal.onrender.com/auth/google";
-      const googleAuthUrl = "http://localhost:5000/auth/google";
+      const apiRedirectUrl = "http://localhost:5173/login";
+      const googleAuthUrl = `http://localhost:5000/auth/google/?redirect_url=${encodeURIComponent(
+        apiRedirectUrl
+      )}`;
+
       window.location.href = googleAuthUrl;
     }
   }

@@ -50,6 +50,15 @@
   font-size: var(--font-size-normal);
 }
 
+.noticeButton {
+  background-color: rgb(246, 11, 11);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: var(--font-size-normal);
+}
 .button:hover {
   background-color: var(--primary-color);
   color: var(--text-color);

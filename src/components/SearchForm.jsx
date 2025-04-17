@@ -8,13 +8,15 @@ export default function SearchForm(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    //set loading
+    props.setLoading(true);
     fetchData({
       method: "GET",
       req: `?query=${searchQuery}`,
     }).then((res) => {
       setData(res);
       //clear input, async anyway
+      props.setLoading(false);
       setSearchQuery("");
     });
   };

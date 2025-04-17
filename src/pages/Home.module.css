@@ -14,11 +14,27 @@
   font-size: 1.1rem;
 }
 
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .loading {
   text-align: center;
   padding: 2rem;
   color: var(--tertiary-color);
   font-size: 1.2rem;
+  animation: pulse 1.2s infinite ease-in-out;
 }
 
 .itemsGrid {

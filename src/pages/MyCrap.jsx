@@ -134,7 +134,7 @@ function MyCrap() {
   const groupedItems = {
     AVAILABLE: filteredItems.filter((item) => item.status === "AVAILABLE"),
     INTERESTED: filteredItems.filter((item) => item.status === "INTERESTED"),
-    SUGGESTED: filteredItems.filter((item) => item.status === "SUGGESTED"),
+    SUGGESTED: filteredItems.filter((item) => item.status === "SCHEDULED"),
     AGREED: filteredItems.filter((item) => item.status === "AGREED"),
   };
 

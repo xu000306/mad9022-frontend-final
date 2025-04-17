@@ -3,6 +3,7 @@ import { useData } from "../context/DataContext";
 import Cookies from "js-cookie";
 import { useState, useEffect, useRef } from "react";
 import styles from "./Crap.module.css";
+
 //list name of buttons
 const initialBtnStates = {
   interest: false,
@@ -28,14 +29,28 @@ function checkIfMyCrap(token, crapDetail) {
     return false;
   }
 }
+function checkIfIAmBuyer(token, crapDetail) {
+  if (token && crapDetail) {
+    const payloadBase64 = token.split(".")[1];
+    const payloadJson = atob(payloadBase64);
+    const userId = JSON.parse(payloadJson).id;
+    console.log(userId, "||", "buyer", crapDetail?.buyer?._id);
+
+    if (userId === crapDetail?.buyer?._id) {
+      return true;
+    }
+    return false;
+  }
+}
 console.log("outside of crap function");
 
 export default function Crap() {
   const token = Cookies.get("token");
   const isMyCrapRef = useRef(false);
+  const amIbuyer = useRef(false);
   const [btnStates, setBtnStates] = useState(initialBtnStates);
   const [crapDetail, setCrapDetail] = useState({});
-
+  const [error, setError] = useState("");
   //get crap id
   const { id } = useParams();
   //fetch single crap once
@@ -56,9 +71,10 @@ export default function Crap() {
     if (!(crapDetail && crapDetail?.owner?._id)) {
       return console.log("no crap!");
     }
-    console.log("check if my crap again!");
 
     isMyCrapRef.current = checkIfMyCrap(token, crapDetail);
+    amIbuyer.current = checkIfIAmBuyer(token, crapDetail);
+    console.log("amIbuyer.current", amIbuyer.current);
     const status = crapDetail.status.toLowerCase();
     //clean the buttons
     setBtnStates({ initialBtnStates });
@@ -81,15 +97,15 @@ export default function Crap() {
         setBtnStates({ ...initialBtnStates, flush: true });
       }
     }
-    //not my crap
+    //not my crap and I am the buyer
     if (!isMyCrapRef.current) {
       if (status === "available") {
         setBtnStates({ ...initialBtnStates, interest: true });
       }
-      if (status === "interested") {
+      if (status === "interested" && amIbuyer.current) {
         setBtnStates({ ...initialBtnStates, buyerReset: true });
       }
-      if (status === "scheduled") {
+      if (status === "scheduled" && amIbuyer.current) {
         setBtnStates({
           ...initialBtnStates,
           agree: true,
@@ -108,7 +124,7 @@ export default function Crap() {
     fetchData({
       req: request,
     }).then((res) => {
-      if (!res?.title) throw new Error("crap logic failed");
+      if (!res?.title) return setError("invalid response data ");
       setCrapDetail({ ...res });
     });
   }
@@ -145,16 +161,17 @@ export default function Crap() {
 
         body: { address, date, time },
       }).then((res) => {
-        if (!res?.title) throw new Error("crap logic failed");
+        if (!res?.title) return setError(" suggest response failed");
         setCrapDetail({ ...res });
         console.log("schedule submit!");
       });
     } else {
-      throw new Error("empty suggestion input! ");
+      return setError("Empty suggestion input! ");
     }
   }
   return (
     <>
+      {error && <div className={styles.errorMessage}>{error}</div>}
       {Object.keys(crapDetail).length > 0 ? (
         <div className={styles.page}>
           <img
@@ -174,6 +191,7 @@ export default function Crap() {
               onSubmit={(ev) => {
                 schedule(ev);
               }}
+              className={styles.form}
             >
               <h4>Set pickup address and time:</h4>
               <input

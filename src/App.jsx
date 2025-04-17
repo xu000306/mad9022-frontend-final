@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import styles from "./App.module.css";
 import MyCrap from "./pages/MyCrap";
 import Offer from "./pages/Offer";
+import Notice from "./pages/Notice";
 function App() {
   return (
     <div>
@@ -19,6 +20,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/mine" element={<MyCrap />} />
           <Route path="/offer" element={<Offer />}></Route>
+          <Route path="/notice" element={<Notice />}></Route>
         </Routes>
       </main>
     </div>

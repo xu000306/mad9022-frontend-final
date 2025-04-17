@@ -10,9 +10,14 @@ function Home() {
   //get data from data provider;
   const items = useData().data;
   console.log("items", items);
-  // if (!items || items.length === 0) {
-  //   return <p>No data available, Please login!</p>;
-  // }
+  if (items) {
+    if (items?.length > 0) {
+      //put new data ahead
+      items.reverse();
+    } else {
+      console.log("no data fetched!");
+    }
+  }
 
   return (
     <div className={styles.crapPage}>
