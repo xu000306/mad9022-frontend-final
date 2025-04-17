@@ -5,7 +5,9 @@ import Crap from "./pages/Crap";
 import Header from "./components/Header";
 import Login from "./pages/Login";
 import styles from "./App.module.css";
-
+import MyCrap from "./pages/MyCrap";
+import Offer from "./pages/Offer";
+import Notice from "./pages/Notice";
 function App() {
   return (
     <div>
@@ -14,8 +16,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/crap" element={<Crap />} />
+          <Route path="/crap/:id" element={<Crap />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/mine" element={<MyCrap />} />
+          <Route path="/offer" element={<Offer />}></Route>
+          <Route path="/notice" element={<Notice />}></Route>
         </Routes>
       </main>
     </div>

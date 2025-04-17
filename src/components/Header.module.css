@@ -20,7 +20,10 @@
   font-size: var(--font-size-large);
   color: var(--primary-color);
 }
-
+.logo {
+  display: flex;
+  align-items: center;
+}
 .nav {
   display: flex;
   gap: 1rem;
@@ -47,7 +50,22 @@
   font-size: var(--font-size-normal);
 }
 
+.noticeButton {
+  background-color: rgb(246, 11, 11);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: var(--font-size-normal);
+}
 .button:hover {
   background-color: var(--primary-color);
   color: var(--text-color);
+}
+.logoImage {
+  width: 6rem;
+}
+.logoName {
+  display: inline;
 }
