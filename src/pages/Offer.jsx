@@ -17,13 +17,13 @@ async function fetchData({
   }
 
   try {
-    // const apiUrl = `  https://mad9124backendfinal.onrender.com/api/${endpoint}${
-    //   query ? `?query=${encodeURIComponent(query)}` : ""
-    // }`;
-
-    const apiUrl = ` http://localhost:5000/api/${endpoint}${
+    const apiUrl = `  https://mad9124backendfinal.onrender.com/api/${endpoint}${
       query ? `?query=${encodeURIComponent(query)}` : ""
     }`;
+
+    // const apiUrl = ` http://localhost:5000/api/${endpoint}${
+    //   query ? `?query=${encodeURIComponent(query)}` : ""
+    // }`;
     // Configure headers based on whether we're sending JSON or FormData
     const headers = {
       authorization: `Bearer ${token}`,

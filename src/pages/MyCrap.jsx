@@ -19,12 +19,12 @@ async function fetchData({
   // Using hardcoded token for testing (replace with cookie-based token in production)
 
   try {
-    const apiUrl = `http://localhost:5000/api/${endpoint}${
-      query ? `?query=${encodeURIComponent(query)}` : ""
-    }`;
-    // const apiUrl = `https://mad9124backendfinal.onrender.com/api/${endpoint}${
+    // const apiUrl = `http://localhost:5000/api/${endpoint}${
     //   query ? `?query=${encodeURIComponent(query)}` : ""
     // }`;
+    const apiUrl = `https://mad9124backendfinal.onrender.com/api/${endpoint}${
+      query ? `?query=${encodeURIComponent(query)}` : ""
+    }`;
     // Configure headers based on whether we're sending JSON or FormData
     const headers = {
       authorization: `Bearer ${token}`,

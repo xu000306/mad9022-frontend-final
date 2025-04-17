@@ -51,9 +51,9 @@ function DataProvider({ children }) {
     }
 
     try {
-      //const apiUrl = `https://mad9124backendfinal.onrender.com/api/crap/${req}`;
+      const apiUrl = `https://mad9124backendfinal.onrender.com/api/crap/${req}`;
 
-      const apiUrl = `http://localhost:5000/api/crap/${req}`;
+      //const apiUrl = `http://localhost:5000/api/crap/${req}`;
 
       const res = await fetch(apiUrl, {
         method,
