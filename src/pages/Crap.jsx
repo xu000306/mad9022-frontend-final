@@ -34,7 +34,7 @@ function checkIfIAmBuyer(token, crapDetail) {
     const payloadBase64 = token.split(".")[1];
     const payloadJson = atob(payloadBase64);
     const userId = JSON.parse(payloadJson).id;
-    console.log(userId, "||", "buyer", crapDetail?.buyer?._id);
+    console.log(userId, "||", "buyer", crapDetail?.buyer?._id, crapDetail);
 
     if (userId === crapDetail?.buyer?._id) {
       return true;
@@ -42,7 +42,6 @@ function checkIfIAmBuyer(token, crapDetail) {
     return false;
   }
 }
-console.log("outside of crap function");
 
 export default function Crap() {
   const token = Cookies.get("token");

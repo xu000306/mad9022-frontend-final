@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import styles from "./Notice.module.css";
 import { useData, DataProvider } from "../context/DataContext";
+import { Link } from "react-router-dom";
 
 export default function Notice() {
   const { notice } = useData();
@@ -11,12 +11,16 @@ export default function Notice() {
   return (
     <div>
       <h3>
-        These items require your actons ,please check My Crap page for details:
+        Notice for my crap is interested or agreed, scheduled crap as I am
+        buyer,please check the button for details:
       </h3>
       {notice?.length > 0 ? (
         notice.map((item) => (
-          <p key={item._id}>
-            Crap: {item.title} in status {item.status} require your response!
+          <p key={item._id} className={styles.item}>
+            Crap: {item.title} in status {item.status} require your response:
+            <Link to={`/crap/${item._id}`} className={styles.viewButton}>
+              View Details
+            </Link>
           </p>
         ))
       ) : (

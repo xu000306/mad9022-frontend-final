@@ -23,9 +23,9 @@ function checkIfIAmBuyer(token, crapDetail) {
     const payloadBase64 = token.split(".")[1];
     const payloadJson = atob(payloadBase64);
     const userId = JSON.parse(payloadJson).id;
-    console.log(userId, "||", "buyer", crapDetail?.buyer?._id);
+    console.log(userId, "||", "buyer", crapDetail?.buyer);
 
-    if (userId === crapDetail?.buyer?._id) {
+    if (userId === crapDetail?.buyer) {
       return true;
     }
     return false;
@@ -81,11 +81,18 @@ function DataProvider({ children }) {
     const getNotice = async () => {
       const data = await fetchData({ method: "GET", req: "mine" });
       if (data && data?.length > 0) {
-        console.log("shit", data);
+        console.log("Mine data", data);
         const filterData = data.filter((details) => {
           let isMine = checkIfMyCrap(token, details);
           let isBuyer = checkIfIAmBuyer(token, details);
-          console.log(details.status);
+          console.log(
+            details._id,
+            "isMine",
+            isMine,
+            "isBuyer",
+            isBuyer,
+            details
+          );
 
           if (
             isMine &&

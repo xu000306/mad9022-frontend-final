@@ -75,7 +75,7 @@ function MyCrap() {
     { value: "all", label: "All Items" },
     { value: "AVAILABLE", label: "Available" },
     { value: "INTERESTED", label: "Interest Expressed" },
-    { value: "SUGGESTED", label: "Pickup Scheduled" },
+    { value: "SCHEDULED", label: "Pickup Scheduled" },
     { value: "AGREED", label: "Pickup Agreed" },
   ];
 
