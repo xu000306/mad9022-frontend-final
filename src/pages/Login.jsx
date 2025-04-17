@@ -35,12 +35,33 @@ export default function Login() {
       setLogState(false);
     } else {
       // Redirect to Google login
-      // const googleAuthUrl =
-      //   "https://mad9124backendfinal.onrender.com/auth/google";
-      const apiRedirectUrl = "http://localhost:5173/login";
-      const googleAuthUrl = `http://localhost:5000/auth/google/?redirect_url=${encodeURIComponent(
+      // const apiRedirectUrl = "https://mad9124backendfinal.onrender.com/login";
+      // const googleAuthUrl = `https://mad9124backendfinal.onrender.com/auth/google/?redirect_url=${encodeURIComponent(
+      //   apiRedirectUrl
+      // )}`;
+
+      // const apiRedirectUrl = "http://localhost:5173/login";
+      // const googleAuthUrl = `http://localhost:5000/auth/google/?redirect_url=${encodeURIComponent(
+      //   apiRedirectUrl
+      // )}`;
+      const frontendBaseUrl = window.location.origin;
+
+      // Check if you're on localhost (development)
+      const isLocalhost = frontendBaseUrl.includes("localhost");
+
+      // Set backend base URL accordingly
+      const backendBaseUrl = isLocalhost
+        ? "http://localhost:5000"
+        : "https://mad9124backendfinal.onrender.com";
+
+      // Redirect URL after Google Auth
+      const apiRedirectUrl = `${frontendBaseUrl}/login`;
+
+      // Final Google Auth URL
+      const googleAuthUrl = `${backendBaseUrl}/auth/google/?redirect_url=${encodeURIComponent(
         apiRedirectUrl
       )}`;
+      console.log("googleAuthUrl", googleAuthUrl);
 
       window.location.href = googleAuthUrl;
     }
